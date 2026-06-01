@@ -4,6 +4,12 @@ A full-stack RESTful API for task management built with **Next.js 16**, **Clerk*
 
 ---
 
+## 🌟 Live Demo
+
+**[Live Preview on Vercel](https://task-management-primetrade-delta.vercel.app)**
+
+---
+
 ## 🚀 Quick Start
 
 ### Prerequisites
