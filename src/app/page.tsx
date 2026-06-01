@@ -1,65 +1,163 @@
-import Image from "next/image";
+import Link from "next/link";
+import { auth } from "@clerk/nextjs/server";
+import { redirect } from "next/navigation";
 
-export default function Home() {
+export default async function HomePage() {
+  const { userId } = await auth();
+  if (userId) redirect("/dashboard");
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
+    <main className="min-h-screen pb-24">
+      {/* Top Bar */}
+      <header className="neo-topbar">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 border-[3px] border-black bg-nb-primary-container flex items-center justify-center neo-shadow-sm">
+            <span className="font-headline font-bold text-lg">P</span>
+          </div>
+          <span className="font-headline font-bold text-lg tracking-tight uppercase">
+            PrimeTrade
+          </span>
+        </div>
+        <div className="flex items-center gap-2">
+          <Link href="/sign-in" className="neo-btn neo-btn-surface neo-shadow-sm neo-press-sm text-[12px] py-2 px-3">
+            Sign In
+          </Link>
+          <Link href="/sign-up" className="neo-btn neo-btn-primary neo-shadow-sm neo-press-sm text-[12px] py-2 px-3">
+            Sign Up
+          </Link>
+        </div>
+      </header>
+
+      {/* Hero */}
+      <section className="pt-28 px-4 max-w-3xl mx-auto">
+        <div className="animate-nb-bounce-in">
+          {/* Hero Badge */}
+          <div className="inline-block mb-6">
+            <div className="neo-tag bg-nb-secondary-container">
+              ✦ Backend API Assignment
+            </div>
+          </div>
+
+          <h1 className="text-display-mobile md:text-display uppercase tracking-tight mb-6">
+            Task
+            <br />
+            Management
+            <br />
+            <span className="inline-block bg-nb-primary-container border-[3px] border-black px-3 py-1 neo-shadow -rotate-1">
+              API Platform
+            </span>
           </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+
+          <p className="text-body-lg max-w-lg mb-10 opacity-80">
+            A full-stack RESTful API with authentication, role-based access
+            control, CRUD operations, and interactive Swagger documentation.
           </p>
+
+          <div className="flex flex-col sm:flex-row gap-4">
+            <Link
+              href="/sign-up"
+              className="neo-btn neo-btn-primary neo-shadow-lg neo-press-lg py-5 px-8 text-headline"
+              style={{ fontSize: "20px" }}
+            >
+              <span className="material-symbols-outlined">arrow_forward</span>
+              Start Now
+            </Link>
+            <Link
+              href="/docs"
+              className="neo-btn neo-btn-surface neo-shadow neo-press py-5 px-8 text-title"
+              style={{ fontSize: "20px" }}
+            >
+              <span className="material-symbols-outlined">description</span>
+              API Docs
+            </Link>
+          </div>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+
+        {/* Feature Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-16">
+          {[
+            {
+              icon: "lock",
+              title: "Clerk Auth",
+              desc: "JWT-based authentication with role-based access control for admin and user roles.",
+              bg: "bg-nb-secondary-container",
+            },
+            {
+              icon: "bolt",
+              title: "RESTful CRUD",
+              desc: "Full CRUD for tasks with Zod validation, pagination, and filtering.",
+              bg: "bg-nb-primary-container",
+            },
+            {
+              icon: "database",
+              title: "Neon + Prisma",
+              desc: "Serverless Postgres with Prisma ORM for type-safe database queries.",
+              bg: "bg-nb-tertiary-container",
+            },
+          ].map((f, i) => (
+            <div
+              key={f.title}
+              className="neo-card p-5 animate-nb-slide-up"
+              style={{ animationDelay: `${i * 0.1}s` }}
+            >
+              <div
+                className={`w-12 h-12 ${f.bg} border-[2px] border-black flex items-center justify-center neo-shadow-sm mb-4`}
+              >
+                <span className="material-symbols-outlined">{f.icon}</span>
+              </div>
+              <h3 className="text-title mb-2">{f.title}</h3>
+              <p className="text-body opacity-70">{f.desc}</p>
+            </div>
+          ))}
         </div>
-      </main>
-    </div>
+
+        {/* API Endpoints Preview */}
+        <div className="mt-16 neo-card p-6 animate-nb-slide-up" style={{ animationDelay: "0.3s" }}>
+          <h2 className="text-headline mb-4 uppercase">API Endpoints</h2>
+          <div className="space-y-2">
+            {[
+              { method: "GET", path: "/api/v1/tasks", desc: "List tasks (paginated)" },
+              { method: "POST", path: "/api/v1/tasks", desc: "Create a task" },
+              { method: "PUT", path: "/api/v1/tasks/:id", desc: "Update a task" },
+              { method: "DELETE", path: "/api/v1/tasks/:id", desc: "Delete a task" },
+              { method: "GET", path: "/api/v1/admin/users", desc: "Admin: list users" },
+            ].map((ep) => (
+              <div
+                key={ep.method + ep.path}
+                className="flex items-center gap-3 p-3 border-[2px] border-black bg-nb-surface-container-lowest"
+              >
+                <span
+                  className={`neo-badge ${
+                    ep.method === "GET"
+                      ? "bg-nb-secondary-fixed"
+                      : ep.method === "POST"
+                      ? "bg-nb-primary-container"
+                      : ep.method === "PUT"
+                      ? "bg-nb-secondary-container"
+                      : "bg-nb-error-container"
+                  }`}
+                  style={{ minWidth: "70px", justifyContent: "center" }}
+                >
+                  {ep.method}
+                </span>
+                <code className="font-headline font-bold text-sm flex-1 truncate">
+                  {ep.path}
+                </code>
+                <span className="text-body text-sm opacity-60 hidden sm:block">
+                  {ep.desc}
+                </span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer className="mt-20 border-t-[3px] border-black py-6 text-center">
+        <span className="text-label opacity-60">
+          PrimeTrade API — Backend Intern Assignment © {new Date().getFullYear()}
+        </span>
+      </footer>
+    </main>
   );
 }
